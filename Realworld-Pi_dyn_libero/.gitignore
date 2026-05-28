@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.libero_config/
+.libero_py38_deps/
+outputs/
+caches/
+wandb/

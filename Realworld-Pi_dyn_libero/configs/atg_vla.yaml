@@ -1,0 +1,78 @@
+base:
+  openpi_root: ../RealWorld-Pi
+  selected_preset: pi05_libero
+  openpi_config_name: pi05_libero
+  checkpoint_dir: /data1/vla-data/openpi/openpi-assets/checkpoints/pi05_libero
+  prompt_key: prompt
+  action_output_key: actions
+  checkpoint_presets:
+    pi05_libero:
+      openpi_config_name: pi05_libero
+      checkpoint_dir: /data1/vla-data/openpi/openpi-assets/checkpoints/pi05_libero
+      dataset_root: /data1/vla-data/LIBERO-datasets/datasets/libero_spatial
+      action_horizon: 10
+      prompt: pick up the black bowl on the ramekin and place it on the plate
+
+model:
+  action_dim: 7
+  state_dim: 8
+  d_obj: 128
+  d_flow: 64
+  d_pi05: 0
+  d_model: 256
+  d_h_tau: 256
+  d_action_summary: 128
+  hidden_dim: 512
+  num_layers: 2
+  num_heads: 4
+  dropout: 0.05
+  num_tasks: 64
+  task_embedding_dim: 32
+  codebook_size: 128
+  num_latent_tokens: 4
+  num_ego_tokens: 2
+  tokenizer_warmup_epochs: 3
+  use_pi05_feature: false
+
+data:
+  cache_root: caches/libero_atg_vla
+  dataset_root: /data1/vla-data/LIBERO-datasets/datasets/libero_spatial
+  raw_action_key: actions
+  raw_state_key: state
+  train_split: train
+  val_split: val
+  train_episodes: 4
+  val_episodes: 1
+  max_frames_per_episode: null
+  future_steps: [1, 2, 4, 6]
+  chunk_indices: [1, 2, 3, 4, 5, 6, 7]
+  control_dt: 0.05
+  latency_steps: 2
+  task_id_default: 0
+  require_action_space_audit: true
+  action_space: libero_delta_7d_xyz_axisangle_gripper_state8
+
+loss:
+  lambda_delta: 0.5
+  lambda_l2: 0.05
+  lambda_vq: 0.25
+  lambda_recon: 1.0
+  lambda_robot: 0.1
+  lambda_residual_l2: 0.0001
+
+train:
+  batch_size: 128
+  epochs: 50
+  lr: 0.0001
+  weight_decay: 0.0001
+  grad_clip: 1.0
+  early_stop_patience: 8
+  num_workers: 4
+  seed: 7
+  device: cuda
+
+safety:
+  per_dim_limit: null
+  norm_limit: null
+  stats_multiplier: 1.5
+  fallback_on_nan: true
